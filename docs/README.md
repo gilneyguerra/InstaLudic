@@ -55,6 +55,8 @@ pytest                     # rodar testes
 
 A VPS é provisionada com UFW em modo paranoico (somente SSH público liberado, nenhuma porta web exposta). Para acessar o CRM remotamente sem expor portas, use **Tailscale** — VPN mesh zero-config, gratuita até 100 dispositivos.
 
+> 📘 **Sem experiência com VPN?** Veja o [guia passo a passo completo](TAILSCALE_GUIDE.md) — assume zero conhecimento prévio.
+
 ### Setup na VPS
 
 ```bash
