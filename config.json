@@ -1,0 +1,64 @@
+{
+  "clinic": {
+    "name": "Casa Ludic",
+    "city": "Rio das Ostras/RJ",
+    "phone": "+5522999999999",
+    "instagram_handle": "casaludic"
+  },
+  "services": [
+    "psicologia",
+    "fisioterapia",
+    "fonoaudiologia",
+    "musicalizacao",
+    "psicopedagogia",
+    "terapia_ocupacional"
+  ],
+  "service_aliases": {
+    "psico": "psicologia",
+    "psi": "psicologia",
+    "fono": "fonoaudiologia",
+    "fonoaudiologia": "fonoaudiologia",
+    "fisio": "fisioterapia",
+    "fisioterapia": "fisioterapia",
+    "musical": "musicalizacao",
+    "musicalizacao": "musicalizacao",
+    "psicopedagoga": "psicopedagogia",
+    "psicopedagogia": "psicopedagogia",
+    "to": "terapia_ocupacional",
+    "terapia ocupacional": "terapia_ocupacional"
+  },
+  "outreach": {
+    "max_messages_per_lead_per_week": 5,
+    "business_hours_start": "09:00",
+    "business_hours_end": "18:00",
+    "timezone": "America/Sao_Paulo"
+  },
+  "qualification": {
+    "thresholds": {"hot": 70, "warm": 40},
+    "weights": {
+      "has_phone": 30,
+      "has_email": 15,
+      "has_service": 20,
+      "urgency": 25,
+      "business_hours": 10
+    }
+  },
+  "templates": {
+    "whatsapp_greeting": "Olá {name}! Aqui é da Casa Ludic, clínica multidisciplinar infantil em Rio das Ostras. Vimos seu interesse em {service} e gostaríamos de oferecer uma avaliação inicial. Posso agendar?",
+    "whatsapp_followup": "Oi {name}, tudo bem? Continuamos à disposição para agendar a avaliação em {service}. Qual o melhor horário para você?",
+    "email_followup_subject": "Casa Ludic - Avaliação em {service}",
+    "email_followup_body": "<p>Olá {name},</p><p>A Casa Ludic está pronta para acolher seu filho com a melhor equipe multidisciplinar de Rio das Ostras.</p><p>Para o serviço de <b>{service}</b>, podemos agendar uma avaliação inicial gratuita.</p><p>Responda este e-mail ou nos chame no WhatsApp.</p><p>Equipe Casa Ludic ✓</p>"
+  },
+  "palette": {
+    "primary": "#667eea",
+    "secondary": "#764ba2",
+    "success": "#4CAF50",
+    "warn": "#FF9800",
+    "error": "#F44336"
+  },
+  "content_strategy": {
+    "reels_pct": 60,
+    "carousel_pct": 25,
+    "static_pct": 15
+  }
+}

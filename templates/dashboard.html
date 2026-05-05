@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Casa Ludic - Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: {{ palette.primary }};
+    --secondary: {{ palette.secondary }};
+    --success: {{ palette.success }};
+    --warn: {{ palette.warn }};
+    --error: {{ palette.error }};
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    min-height: 100vh;
+    color: #222;
+  }
+  header {
+    padding: 24px 32px;
+    color: #fff;
+  }
+  header h1 { margin: 0; font-size: 28px; }
+  header p { margin: 4px 0 0; opacity: 0.9; font-size: 13px; }
+  main {
+    padding: 0 32px 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  .card h2 { margin: 0 0 12px; font-size: 16px; color: var(--secondary); }
+  .kpi { font-size: 36px; font-weight: bold; color: var(--primary); }
+  .kpi-label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+  .kpi-row { display: flex; justify-content: space-around; }
+  .kpi-row > div { text-align: center; }
+  footer {
+    padding: 16px 32px;
+    color: #fff;
+    font-size: 11px;
+    opacity: 0.8;
+    font-family: 'Courier New', monospace;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>{{ clinic.name }} - Dashboard</h1>
+  <p>{{ clinic.city }} | Atualizado em {{ generated_at }}</p>
+</header>
+<main>
+  <section class="card">
+    <h2>KPIs</h2>
+    <div class="kpi-row">
+      <div><div class="kpi">{{ kpis.total_leads }}</div><div class="kpi-label">Leads totais</div></div>
+      <div><div class="kpi">{{ kpis.total_outreach }}</div><div class="kpi-label">Mensagens enviadas</div></div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>Distribuição por prioridade</h2>
+    <canvas id="priorityChart" height="200"></canvas>
+  </section>
+  <section class="card">
+    <h2>Distribuição por estágio</h2>
+    <canvas id="stageChart" height="200"></canvas>
+  </section>
+  <section class="card">
+    <h2>Distribuição por serviço</h2>
+    <canvas id="serviceChart" height="200"></canvas>
+  </section>
+  <section class="card" style="grid-column: 1/-1;">
+    <h2>Leads capturados (últimos 30 dias)</h2>
+    <canvas id="timelineChart" height="120"></canvas>
+  </section>
+  {% if instagram %}
+  <section class="card">
+    <h2>Instagram</h2>
+    <div class="kpi-row">
+      <div><div class="kpi">{{ instagram.followers }}</div><div class="kpi-label">Seguidores</div></div>
+      <div><div class="kpi">{{ instagram.posts }}</div><div class="kpi-label">Posts</div></div>
+      <div><div class="kpi">{{ instagram.engagement }}%</div><div class="kpi-label">Engajamento</div></div>
+    </div>
+  </section>
+  {% endif %}
+</main>
+<footer>Gerado em {{ generated_at }} - Casa Ludic CRM v1.0</footer>
+<script>
+  const palette = {
+    primary: "{{ palette.primary }}",
+    secondary: "{{ palette.secondary }}",
+    success: "{{ palette.success }}",
+    warn: "{{ palette.warn }}",
+    error: "{{ palette.error }}"
+  };
+  const priorityData = {{ priority_json | safe }};
+  const stageData = {{ stage_json | safe }};
+  const serviceData = {{ service_json | safe }};
+  const timelineData = {{ timeline_json | safe }};
+
+  function makeDoughnut(id, data, colors) {
+    new Chart(document.getElementById(id), {
+      type: 'doughnut',
+      data: {
+        labels: Object.keys(data),
+        datasets: [{ data: Object.values(data), backgroundColor: colors }]
+      },
+      options: { plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+
+  makeDoughnut('priorityChart', priorityData, [palette.error, palette.warn, '#bbb']);
+  makeDoughnut('stageChart', stageData, [palette.primary, palette.secondary, palette.success, palette.warn]);
+  makeDoughnut('serviceChart', serviceData, [palette.primary, palette.secondary, palette.success, palette.warn, palette.error, '#888']);
+
+  new Chart(document.getElementById('timelineChart'), {
+    type: 'line',
+    data: {
+      labels: timelineData.map(p => p.date),
+      datasets: [{
+        label: 'Leads/dia',
+        data: timelineData.map(p => p.count),
+        borderColor: palette.primary,
+        backgroundColor: palette.primary + '33',
+        fill: true,
+        tension: 0.3
+      }]
+    },
+    options: { plugins: { legend: { display: false } } }
+  });
+</script>
+</body>
+</html>
