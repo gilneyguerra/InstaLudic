@@ -51,6 +51,40 @@ pytest                     # rodar testes
 - **Erros (graceful)**: decorator `@safe` em todas as operações públicas; nada propaga exceção; tudo é logado em `outputs/casa_ludic.log`.
 - **Relatórios**: PDF Helvetica via ReportLab; HTML com paleta `#667eea/#764ba2/#4CAF50/#FF9800/#F44336`; CSV `utf-8-sig`.
 
+## Acesso admin via Tailscale
+
+A VPS é provisionada com UFW em modo paranoico (somente SSH público liberado, nenhuma porta web exposta). Para acessar o CRM remotamente sem expor portas, use **Tailscale** — VPN mesh zero-config, gratuita até 100 dispositivos.
+
+### Setup na VPS
+
+```bash
+# Modo interativo (cole a URL no navegador para autorizar):
+sudo bash /opt/casa-ludic-crm/deploy/setup_tailscale.sh
+
+# Modo não-interativo (gere uma auth key em https://login.tailscale.com/admin/settings/keys):
+sudo TS_AUTHKEY=tskey-auth-... bash /opt/casa-ludic-crm/deploy/setup_tailscale.sh
+```
+
+O script: instala o Tailscale, libera `tailscale0` no UFW, sobe `tailscale up --ssh` com hostname `casa-ludic-vps` e imprime o IP da tailnet.
+
+### Setup no laptop/celular
+
+1. Instale o cliente em [tailscale.com/download](https://tailscale.com/download) (mesma conta da VPS)
+2. SSH direto pelo nome: `ssh root@casa-ludic-vps`
+3. Rodar a CLI remota: `ssh root@casa-ludic-vps 'bash /opt/casa-ludic-crm/deploy/cli.sh'`
+
+### Endurecer (opcional)
+
+Após confirmar que o SSH via tailnet funciona, feche o SSH público:
+
+```bash
+ufw delete allow OpenSSH
+ufw allow in on tailscale0 to any port 22 proto tcp
+ufw reload
+```
+
+> **Cuidado:** se o Tailscale cair antes de você reativar `OpenSSH`, perde acesso. Teste o SSH-via-tailnet antes de remover o público.
+
 ## Troubleshooting
 
 | Sintoma | Ação |
@@ -60,6 +94,8 @@ pytest                     # rodar testes
 | `Gmail SMTPAuthenticationError` | Use App Password, não senha normal |
 | Instagram bloqueia login | Sistema cai automaticamente em mock; verifique `outputs/casa_ludic.log` |
 | `database is locked` | Apenas uma instância de `main.py` por vez |
+| `tailscale: command not found` na VPS | Rodar `sudo bash deploy/setup_tailscale.sh` |
+| Tailscale conecta mas SSH falha | Confirme `tailscale status` na VPS; reabra a sessão no cliente; verifique se o hostname `casa-ludic-vps` aparece no [admin Tailscale](https://login.tailscale.com/admin/machines) |
 
 ## Estrutura
 
