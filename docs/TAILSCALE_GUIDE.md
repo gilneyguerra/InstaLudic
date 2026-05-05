@@ -64,7 +64,18 @@ Se algum item está faltando, pare aqui e resolva antes de continuar. Sem a VPS 
 
 4. O Tailscale vai te perguntar o nome da sua "tailnet" (sua rede privada). Pode aceitar o que ele sugere, é só um identificador interno.
 
-5. Você cai na tela **Machines** (Máquinas). Está vazia. É esperado — vamos popular nos próximos passos.
+5. **Pode aparecer um questionário** ("Help us better understand your product needs"). É só pesquisa de marketing, não afeta nada técnico. Responda assim:
+
+   - **Primary reason:** `Infrastructure Access`
+   - **Role:** `IT` ou `Developer` ou `Founder / Owner` (NÃO escolha Sales/Marketing — desvia o conteúdo)
+   - **VPN provider:** marque `I don't use a VPN`
+   - **How did you hear:** opcional, pode pular
+
+   Depois clique em **Next: Add your first device**.
+
+6. **A próxima tela do onboarding tenta te guiar pra instalar Tailscale numa máquina.** Você pode **fechar a aba** e ir direto pra <https://login.tailscale.com/admin/machines> — nosso guia segue uma ordem específica (notebook primeiro, VPS depois) que casa com o `setup_tailscale.sh`.
+
+7. Você cai na tela **Machines** (Máquinas). Está vazia. É esperado — vamos popular nos próximos passos.
 
 > ✅ **Checkpoint:** você consegue ver a página <https://login.tailscale.com/admin/machines>, ainda sem nenhuma máquina listada.
 
